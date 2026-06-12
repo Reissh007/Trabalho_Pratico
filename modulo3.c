@@ -2,7 +2,20 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <type.h>
+
+typedef struct Sensor {
+    char codigo[20];
+    char tipo[20];
+    float valor;
+    char unidade[10];
+    char estado[20];
+} Sensor;
+
+typedef struct No {
+    Sensor s;
+    struct No *prox;
+} No;
+
 
 // variaveis globais da lista de sensores
 No *lista = NULL;
