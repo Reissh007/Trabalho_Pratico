@@ -25,20 +25,19 @@ int testip(char *ip, int so) {
 
 int main() {
 	
-	//DO modulo 1
-	  // LÓGICA DO PING CORRIGIDA
+	//DO modulo 
         do {
-            printf("\n Endereço IP: "); // Corrigido: adicionado ';'
+            printf("\n Endereço IP: ");
             fgets(temp, sizeof(temp), stdin);
             temp[strcspn(temp, "\n")] = '\0';
             
             E[*i].IP = (char*)malloc((strlen(temp) + 1) * sizeof(char));
             strcpy(E[*i].IP, temp);
 
-            // Chama a função testip passando o IP e o SO selecionado
+            // Chama a função testip passando o IP e o SO selecionado (1 windows 0 linux)
             if (testip(E[*i].IP, so) != 0) {
                 printf("\n[ERRO] IP inacessível. Tente novamente.\n");
-                free(E[*i].IP); // Liberta a memória do IP errado antes de repetir
+                free(E[*i].IP);
                 E[*i].IP = NULL;
             }
         } while (E[*i].IP == NULL);
