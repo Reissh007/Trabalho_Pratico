@@ -1,5 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
+int testip(char *ip, int so) {
+    char comando[MAXCHAR]; 
+    if (so == 1) {
+        printf(" -MS-WINDOWS- \n"); 
+        sprintf(comando, "ping -n 4 %s", ip);
+    } else {
+        printf(" -LINUX- \n");
+        sprintf(comando, "ping -c 4 %s", ip);
+    }
+
+    printf("A iniciar o ping para %s...\n\n", ip);
+    int status = system(comando);
+
+    if (status == 0) {
+        printf("\nO host respondeu com sucesso!\n");
+        return 0;
+    } else {
+        printf("\nFalha ao contactar o host ou erro no comando.\n");
+        return 1;
+    }
+}
+
 
 int main() {
 	
@@ -20,28 +42,7 @@ int main() {
                 E[*i].IP = NULL;
             }
         } while (E[*i].IP == NULL);
-    // Alvo que queremos testar (pode ser um IP ou domínio)
-    char ip[] = "192.168.56.1"; 
-    char comando[100];
-    
-    //
-
-    // Monta o comando. 
-    // No Linux/macOS usamos "-c 4" para enviar apenas 4 pacotes.
-    // No Windows, mudaria para "ping -n 4 %s"
-    sprintf(comando, "ping -n 4 %s", ip);
-
-    printf("A iniciar o ping para %s...\n\n", ip);
-    
-    // Executa o comando no terminal
-    int status = system(comando);
-
-    // Verifica se o comando foi executado com sucesso
-    if (status == 0) {
-        printf("\nO host respondeu com sucesso!\n");
-    } else {
-        printf("\nFalha ao contactar o host ou erro no comando.\n");
-    }
+   
 
     return 0;
 }
