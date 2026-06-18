@@ -26,13 +26,15 @@ typedef struct EQUIPAMENTOS {
     char *IP;
     char *mac;
     char *localizacao;
+    char *estado;
     dataverificacao *Data;
     EQUIPAMENTOS *ant;
     EQUIPAMENTOS *prox;
 } equipamento;
 
-// FUNÇAO TESTE DE PING,coloquei para uso no modulo 2
+// FUNÇAO TESTE DE PING,coloquei para uso do modulo 2
 int testip(char *ip, int so) {
+	
     char comando[MAXCHAR];
     
     if (so == 1) {
@@ -55,10 +57,47 @@ int testip(char *ip, int so) {
     }
 }
 
+void estado(equipamento *E){
+	int op;
+	char temp[MAXCHAR];
+	printf("\n Qual o estado do equipamentos? \n 1 - Operacional \n 2 - Em Falha \n 3 - Em Manutenção \n 4 -Desativado;")
+	scanf("%d",&op);
+	switch(op){
+	case 1:
+		printf("\nEstado Operacional");
+		sprintf(temp,"Operacional")
+		E->estado=(char*)malloc(strlen(temp));
+		strcpy(E->estado,temp);
+		break;
+		
+	case 2:
+	printf("\nEstado Em Falha");
+		sprintf(temp,"Em Falha")
+		E->estado=(char*)malloc(strlen(temp));
+		strcpy(E->estado,temp);
+		break;
+	case 3:	
+		printf("\nEstado Em Manutencao");
+		sprintf(temp,"Em Manutencao")
+		E->estado=(char*)malloc(strlen(temp));
+		strcpy(E->estado,temp);
+		break;
+	case 4:
+	printf("\nEstado Desativado");
+		sprintf(temp,"Desativado");
+		E->estado=(char*)malloc(strlen(temp));
+		strcpy(E->estado,temp);
+		break;
+		default:
+            printf("\nValor invalido!!\n"); 
+            break;}
+		
+}
+
 // Adiciona equipamentos 
 void Adicionar(equipamento *E) {
 //verificação do inicio
-
+	int n=1
     char temp[MAXCHAR];
     int resp;
 
@@ -66,7 +105,8 @@ void Adicionar(equipamento *E) {
         printf("----------------------------------------------");
         printf("\n Codigo Interno Unico (CIU): %d ", *i); // Usa *i para ver o valor
         
-        E.CIU = *i; // Atribui o CIU automaticamente
+        E.CIU = ; // Atribui o CIU automaticamente TRABALHAR NISSO!
+        
 
         printf("\n Nome Do equipamento: ");
         fgets(temp, sizeof(temp), stdin);
@@ -111,7 +151,7 @@ void Adicionar(equipamento *E) {
         E.IP = (char*)malloc((strlen(temp) + 1) * sizeof(char));
         strcpy(E.IP, temp);
         
-        printf("\n Data de verificação: /n Dia: ");
+        printf("\n Data da ultima verificação: /n Dia: ");
         scanf("%d",E.Data.dia);
         printf("/n Mes: ");
         scanf("%d",E.Data.mes);
@@ -121,16 +161,27 @@ void Adicionar(equipamento *E) {
 		E.Data.dataver =(char*)malloc(strlen(temp) * sizeof(char));
 		strcpy(E.Data.dataver, temp);
 		
-    
+		printf("\n Localizacao do Despositivo: "); 
+        fgets(temp, sizeof(temp), stdin);
+        temp[strcspn(temp, "\n")] = '\0';
+        E.localizacao = (char*)malloc((strlen(temp) + 1) * sizeof(char));
+        strcpy(E.localizacao, temp);
+        
+        printf("\n Estado Operacional do equipamento: "); 
+        // FAZER FUNÇÂO PARA ISSO
+        estado
+        
+        
+        
         // Validação da Resposta de Continuidade
         do {     
             printf("\nDeseja Introduzir mais Equipamentos? (Sim - 1 ; Não - 0): ");
-            // Inverti a lógica (1 para Sim, 0 para Não) para fazer mais sentido com o fluxo do while
-            scanf("%d", &resp); // Corrigido: %d e &resp
-            getchar(); // Limpa o buffer do teclado para o próximo fgets
+            
+            scanf("%d", &resp); 
+            getchar(); 
             
 			if (resp == 1){
-				Adicionar(E.prox ); break;//forma recursiva 
+				Adicionar(E.prox ); break; //forma recursiva 
 			}
             if (resp == 0) {
                 printf("\n A terminar a inserção... \n"); break;} 
@@ -139,13 +190,21 @@ void Adicionar(equipamento *E) {
             }
         } while (resp != 0 && resp != 1); 
 } 
-void verificarlista(equipamento *E){
+void verificarlista(equipamento *E,int n){
 	if (E == NULL){
-		printf("\n Lista vazia, Ininiciando inserção");
-		Adicionar(E); break;
+		switch(n){
+			case 1:
+			printf("\n Lista vazia, Ininiciando inserção");
+			Adicionar(E); break;
+	
+		case 2:
+		printf("\n Lista vazia");
+		break;}
 	}
 	if (E != NULL){
-		printf("\n Inicio cheio? \nVerificar anterior");
+		switch(n){
+		case 1:
+				printf("\n Inicio cheio? \nVerificar anterior");
 			if (E.ant == NULL ){
 				printf("\n Anterior vazio");
 				printf("\n Verificar proximo ");
@@ -154,25 +213,31 @@ void verificarlista(equipamento *E){
 			else {printf("Anterior nao vazio, meio de uma lista? ");
 			 prinff("Verificar proximo? ainda em progresso...");break;}
 	}
+		
+		case 2:
+		printf("\n Iniciar Listagem");
+		listar(E);
+		break;}
+	
 	
 }
 // LISTAR 
 void listar(equipamento *E){
-	int n;
+	int n=2
 	printf("\n-----Listagem dos equipamentos------")
 		if ( E != NULL){
-			for (n=0; n<i; n++){
-				printf("\nCodigo Interno Unico: %d", E[n].CIU);
-				printf("\nNome do Equipamento: %s", E[n].nome);
-				printf("\nTipo do Equipamento:%s", E[n].tipo);
-				printf("\nEndereço de IP:%s", E[n].IP);
-				printf("\nMarca:%s", E[n].marca);
-				printf("\nModelo:%s", E[n].modelo);
-				// ainda nao feito printf("\nData de verificacao:%s", E[n].dataverificacao);
-				//printf("\nMAC:%s", E[n].mac);
-				//printf("\nLocalização:%s", E[n].localizacao); 
+			
+				printf("\nCodigo Interno Unico: %d", E.CIU);
+				printf("\nNome do Equipamento: %s", E.nome);
+				printf("\nTipo do Equipamento:%s", E.tipo);
+				printf("\nEndereço de IP:%s", E.IP);
+				printf("\nEndereco MAC: %s",E.mac);
+				printf("\nMarca: %s", E.marca);
+				printf("\nModelo: %s", E.modelo);
+				printf("\nData de verificacao: %s ", E.dataverificacao);
+				printf("\nLocalização:%s", E.localizacao);
+				verificarlista(E.prox,n) 
 				}
-			}
 	else {
 		printf("/nLista chegou ao fim");
 	}
@@ -180,15 +245,13 @@ void listar(equipamento *E){
 
 // MAIN
 int main() {
-		setlocale(LC_ALL, "Portuguese");// exemplo que a professora Tania deu.
-    int so = 1; // Padrão: Windows. Pode ser alterado conforme o sistema.
+		setlocale(LC_ALL, "Portuguese");
+    int so = 1; 
     int op;
-    int n = 0; // Número total de equipamentos inseridos
     int k;
     
-    // Alocação estática de um array ou dinâmica de tamanho fixo inicial para evitar crash
-    // Alocamos espaço para até 50 equipamentos para começar de forma segura
-    equipamento dispositivo[50]; 
+   
+    equipamento dispositivo; 
 
     printf("Selecione o seu Sistema Operativo (1- Windows | 0- Linux): ");
     scanf("%d", &so);
@@ -209,18 +272,20 @@ int main() {
 
         switch (op) {
             case 1:
-                Adicionar(dispositivo, &n, so);
+                Adicionar(dispositivo)
                 break;
+            case 2:
+            	listar
             case 6:
                 printf("Saindo e libertando memória...\n");
                 break;
             default:
-                printf("\nValor invalido!!\n"); // Corrigido: adicionado ';'
+                printf("\nValor invalido!!\n"); 
                 break;
         }    
     } while (op != 6);
 
-    // LIBERAÇÃO DA MEMÓRIA ALOCADA DINAMICAMENTE ANTES DE FECHAR
+    // free (libertação da memoria)
     for (k = 0; k < n; k++) {
         free(dispositivo[k].nome);
         free(dispositivo[k].tipo);
