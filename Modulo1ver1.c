@@ -5,16 +5,19 @@
 #include <ctype.h>
 
 #define MAXCHAR 150
-#define NOME_FICHEIRO "registros_equipamentos.dat"
+#define NOME_FICHEIRO "registros_equipamentos.dat" // facilita 
 
+//Modulo 1 ver1
+
+
+Estruturas
 typedef struct dataverificacao {
     int dia;
     int mes;
     int ano;
 } dataverificacao;
 
-// usa-se "struct EQUIPAMENTOS *" e nao "equipamento *" porque o typedef
-// so fica valido depois de a struct estar completamente definida
+
 typedef struct EQUIPAMENTOS {
     int CIU;
     char *nome;
@@ -48,7 +51,7 @@ int anoBissexto(int ano) {
     return (ano % 4 == 0 && ano % 100 != 0) || (ano % 400 == 0);
 }
 
-// valida dia/mes/ano, incluindo o numero de dias correto por mes e anos bissextos
+// valida dia/mes/ano
 int dataValida(int dia, int mes, int ano) {
     int diasNoMes[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
@@ -67,7 +70,7 @@ int dataValida(int dia, int mes, int ano) {
     return dia >= 1 && dia <= maxDia;
 }
 
-// pede dia/mes/ano em ciclo ate o utilizador introduzir uma data valida
+// ciclo de verificacao da data
 void lerData(int *dia, int *mes, int *ano) {
     do {
         printf(" Dia: ");
@@ -84,9 +87,7 @@ void lerData(int *dia, int *mes, int *ano) {
     } while (!dataValida(*dia, *mes, *ano));
 }
 
-// devolve o nome do estado correspondente a uma opcao do menu (1 a 4),
-// ou NULL se a opcao for invalida; usada em perguntarEstado() e em
-// listarPorEstado() para nao repetir os 4 nomes em dois sitios diferentes
+// devolve O estado como constante subfuncao do estado
 const char *nomeEstado(int op) {
     switch (op) {
         case 1: return "Operacional";
@@ -117,7 +118,7 @@ char *perguntarEstado(void) {
     return duplicarString(estado);
 }
 
-equipamento *criarEquipamento(int *proxCIU) {
+equipamento *criarEquipamento(int *proxCIU) {   //funcao tipo estrutura basicamente devolve a estrutura introduzida
     equipamento *novo = (equipamento *)malloc(sizeof(equipamento));
     char temp[MAXCHAR];
     novo->CIU = *proxCIU;
@@ -145,7 +146,7 @@ equipamento *criarEquipamento(int *proxCIU) {
     novo->prox = NULL;
     return novo;
 }
-
+//insercão no fim
 void inserirNoFim(equipamento **cabeca, equipamento *novo) {
     if (*cabeca == NULL) {
         *cabeca = novo;
@@ -158,7 +159,7 @@ void inserirNoFim(equipamento **cabeca, equipamento *novo) {
     atual->prox = novo;
     novo->ant = atual;
 }
-
+// ** para alterar o ponteiro 
 void Adicionar(equipamento **cabeca, int *proxCIU) {
     int resp;
     do {
@@ -203,11 +204,10 @@ void listar(equipamento *cabeca) {
     }
 }
 
-// comparacao de strings sem distinguir maiusculas/minusculas (portavel,
-// nao depende de strcasecmp que nao existe em C standard / Windows)
+// 
 int igualSemCase(const char *a, const char *b) {
     while (*a && *b) {
-        if (tolower((unsigned char)*a) != tolower((unsigned char)*b)) {
+        if (tolower((unsigned char)*a) != tolower((unsigned char)*b)) { // tolower transforma em minuscula -- Não original
             return 0;
         }
         a++;
@@ -437,7 +437,7 @@ void removerEquipamento(equipamento **cabeca) {
         return;
     }
 
-    // TODO (Modulo 4): impedir a remocao se existirem incidentes tecnicos
+    // TODO tem como objetivo impedir a remocao se existirem incidentes tecnicos
     // pendentes associados a este CIU, assim que o modulo de incidentes existir
 
     printf("\nEquipamento encontrado: %s (%s)", alvo->nome, alvo->tipo);

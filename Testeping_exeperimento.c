@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include MAXCHAR 150
 int testip(char *ip, int so) { //usa ping diretamente
 	FILE *f= NULL ; // apontador para o ficheiro de resultado de ping 
     char comando[MAXCHAR]; 
