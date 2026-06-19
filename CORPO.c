@@ -294,7 +294,10 @@ void alterarEquipamento(equipamento *cabeca) {
 
 int contarEquipamentos(equipamento *cabeca) {
     int n = 0; while (cabeca) { n++; cabeca = cabeca->prox; } return n;
+    
 }
+
+
 
 void liberarLista(equipamento *cabeca) {
     while (cabeca) {
@@ -379,6 +382,39 @@ void guardar(equipamento *cabeca) {
     }
     fclose(fb);
     printf("Dados guardados.\n");
+}
+
+void equipamentos(){
+	equipamento *dispositivos = NULL;
+    carregar(&dispositivos);
+    int proxCIU = obterProximoCIU();
+    printf("Proximo CIU: %d\n", proxCIU);
+	 do {
+        printf("\n=== Equipamentos ===\n");
+        printf(" 1 - Adicionar equipamento\n");
+        printf(" 2 - Remover equipamento\n");
+        printf(" 3 - Alterar equipamento\n");
+        printf(" 4 - Listar todos\n");
+        printf(" 5 - Listar por tipo\n");
+        printf(" 6 - Listar por estado\n");
+        printf(" 7 - Pesquisar\n");
+        printf(" 8 - Conectividade (ping) )\n");
+        printf(" 9 - Guardar e sair\n");
+        printf("Opcao: "); scanf("%d", &op); getchar();
+        switch (op) {
+            case 1: Adicionar(&dispositivos, &proxCIU);    break;
+            case 2: removerEquipamento(&dispositivos);     break;
+            case 3: alterarEquipamento(dispositivos);      break;
+            case 4: listar(dispositivos);                  break;
+            case 5: listarPorTipo(dispositivos);           break;
+            case 6: listarPorEstado(dispositivos);         break;
+            case 7: pesquisarEquipamento(dispositivos);    break;
+            case 8: menuConectividade(dispositivos, so);   break;
+            case 9: guardar(dispositivos);                 break;
+            default: printf("Opcao invalida.\n");
+        }
+    } while (op != 9);
+
 }
 
 // Modulo 2 (teste de ping)
@@ -507,11 +543,16 @@ void menuConectividade(equipamento *cabeca, int so) {
     } while (op != 0);
 }
 
+// Modulo 3 etc
+
+
+
+
+
 // --- Main ---
 
 int main(void) {
     setlocale(LC_ALL, "Portuguese");
-
     int so;
     do {
         printf("Sistema operativo: (1-Windows / 0-Linux): ");
@@ -519,38 +560,10 @@ int main(void) {
         getchar();
     } while (so != 0 && so != 1);
 
-    equipamento *dispositivos = NULL;
-    carregar(&dispositivos);
-    int proxCIU = obterProximoCIU();
-    printf("Proximo CIU: %d\n", proxCIU);
+   
 
     int op;
-    do {
-        printf("\n=== Equipamentos ===\n");
-        printf(" 1 - Adicionar equipamento\n");
-        printf(" 2 - Remover equipamento\n");
-        printf(" 3 - Alterar equipamento\n");
-        printf(" 4 - Listar todos\n");
-        printf(" 5 - Listar por tipo\n");
-        printf(" 6 - Listar por estado\n");
-        printf(" 7 - Pesquisar\n");
-        printf(" 8 - Conectividade (ping) )\n");
-        printf(" 9 - Guardar e sair\n");
-        printf("Opcao: "); scanf("%d", &op); getchar();
-        switch (op) {
-            case 1: Adicionar(&dispositivos, &proxCIU);    break;
-            case 2: removerEquipamento(&dispositivos);     break;
-            case 3: alterarEquipamento(dispositivos);      break;
-            case 4: listar(dispositivos);                  break;
-            case 5: listarPorTipo(dispositivos);           break;
-            case 6: listarPorEstado(dispositivos);         break;
-            case 7: pesquisarEquipamento(dispositivos);    break;
-            case 8: menuConectividade(dispositivos, so);   break;
-            case 9: guardar(dispositivos);                 break;
-            default: printf("Opcao invalida.\n");
-        }
-    } while (op != 9);
-
+   
     liberarLista(dispositivos);
     return 0;
 }
