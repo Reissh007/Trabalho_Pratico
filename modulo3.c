@@ -91,7 +91,7 @@ void importarSensores() {
         printf("Leitura importada: %s - %.1f%s - %s\n",
                s.codigo, s.valor, s.unidade, s.estado);
 
-        // se for anomalo cria incidente automatico
+       
         if (eAnomalo(s.estado)) {
             criarIncidenteSensor(s.codigo, s.estado);
         }
