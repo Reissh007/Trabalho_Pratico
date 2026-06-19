@@ -383,8 +383,8 @@ void guardar(equipamento *cabeca) {
     fclose(fb);
     printf("Dados guardados.\n");
 }
-
-void equipamentos(){
+// Menu dos equipamentos
+void menuequipamentos(){
 	equipamento *dispositivos = NULL;
     carregar(&dispositivos);
     int proxCIU = obterProximoCIU();
@@ -398,8 +398,7 @@ void equipamentos(){
         printf(" 5 - Listar por tipo\n");
         printf(" 6 - Listar por estado\n");
         printf(" 7 - Pesquisar\n");
-        printf(" 8 - Conectividade (ping) )\n");
-        printf(" 9 - Guardar e sair\n");
+        printf(" 8 - Guardar e sair\n");
         printf("Opcao: "); scanf("%d", &op); getchar();
         switch (op) {
             case 1: Adicionar(&dispositivos, &proxCIU);    break;
@@ -409,11 +408,10 @@ void equipamentos(){
             case 5: listarPorTipo(dispositivos);           break;
             case 6: listarPorEstado(dispositivos);         break;
             case 7: pesquisarEquipamento(dispositivos);    break;
-            case 8: menuConectividade(dispositivos, so);   break;
-            case 9: guardar(dispositivos);                 break;
+            case 8: guardar(dispositivos);                 break;
             default: printf("Opcao invalida.\n");
         }
-    } while (op != 9);
+    } while (op != 8);
 
 }
 
@@ -518,7 +516,7 @@ void verLog(void) {
     while (fgets(linha, sizeof(linha), f)) printf("%s", linha);
     fclose(f);
 }
-
+//sub menu 
 void menuConectividade(equipamento *cabeca, int so) {
     int op, ciu;
     do {
@@ -543,6 +541,7 @@ void menuConectividade(equipamento *cabeca, int so) {
     } while (op != 0);
 }
 
+
 // Modulo 3 etc
 
 
@@ -559,6 +558,28 @@ int main(void) {
         scanf("%d", &so);
         getchar();
     } while (so != 0 && so != 1);
+	do {
+        printf("\n=== MENU PRINCIPAL ===\n");
+        printf(" 1 - EQUIPAMENTOS / MODULO 1\n");
+        printf(" 2 - CONECTIVIDADE / MODULO 2\n");
+        printf(" 3 - SENSORES / MODULO 3\n");
+        printf(" 4 - INCIDENTES / MODULO 4\n");
+        printf(" 5 - CONFIGURAÇÕES / MODULO 5\n");
+        printf(" 6 - Guardar e sair\n");
+        printf("Opcao: "); scanf("%d", &op); getchar();
+        switch (op) {
+            case 1: menuequipamentos()    break;
+            case 2: removerEquipamento(&dispositivos);     break;
+            case 3: alterarEquipamento(dispositivos);      break;
+            case 4: listar(dispositivos);                  break;
+            case 5: listarPorTipo(dispositivos);           break;
+            case 6: listarPorEstado(dispositivos);         break;
+            case 7: pesquisarEquipamento(dispositivos);    break;
+            case 8: guardar(dispositivos);                 break;
+            default: printf("Opcao invalida.\n");
+        }
+    } while (op != 8);
+    
 
    
 
