@@ -1,7 +1,20 @@
 #include <stdio.h>
 #include <stdlib.h>
-int testip(char *ip, int so) {
+#include <time.h>
+int testip(char *ip, int so) { //usa ping diretamente
+	FILE *f= NULL ; // apontador para o ficheiro de resultado de ping 
     char comando[MAXCHAR]; 
+    char datahora[MAXCHAR]; //variavel que vai carregar data e hora usando biblioteca time.h
+    time_t agora = time(NULL); // Pega tempo atual do sistema e guarda
+    f = fopen("pingresultado.txt" ,"a");
+    if (f== NULL){
+    	printf("\nErro ao abrir o ficheiro \nCriando Ficheiro");
+    	f= fopen("pingresultado.txt" ,"w");
+    	
+   	 	
+    	
+	}
+	strftime(datahora, sizeof(datahora), "%Y-%m-%d %H:%M:%S", localtime(&agora));
     if (so == 1) {
         printf(" -MS-WINDOWS- \n"); 
         sprintf(comando, "ping -n 4 %s", ip);
@@ -15,11 +28,25 @@ int testip(char *ip, int so) {
 
     if (status == 0) {
         printf("\nO host respondeu com sucesso!\n");
+        if (f != NULL){
+        	fprintf(f, "\n=== %s ===\n", datahora); 
+        	fprintf(f,"\nIP: %s",ip);
+        	fprintf(f,"\nComando: %s ",comando); //so para ter certeza que foi feito o comando certo
+        	fprintf(f,"\nRESULTADO DO PING : SUCESSO");
+			fprintf( "\n--------------------------------------------\n");
+		}
         return 0;
     } else {
         printf("\nFalha ao contactar o host ou erro no comando.\n");
+        if (f != NULL){
+        	fprintf(f, "\n=== %s ===\n", datahora);
+        	fprintf(f,"\nIP: %s",ip);
+        	fprintf(f,"\nComando: %s ",comando); //so para ter certeza que foi feito o comando certo
+        	fprintf(f,"\nRESULTADO DO PING : FALHA \n\n--------------------------");
+		}
         return 1;
     }
+fclose(f);
 }
 
 
