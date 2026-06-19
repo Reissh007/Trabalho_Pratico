@@ -219,7 +219,7 @@ void concluirIncidente(int num) {
 
 //listagen
 
-void listarPorEstado(int estado) {
+void listarIncidentesPorEstado(int estado) {
     NoInc *atual = listaInc;
     int count = 0;
     while (atual != NULL) {

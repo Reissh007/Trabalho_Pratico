@@ -32,7 +32,7 @@ void imprimirConfig(Config c) {
     printf("  Valor novo: %s\n", c.valorNovo);
     printf("  Tecnico: %s\n", c.tecnico);
     printf("  Data: %s\n", buf);
-    printf("  ----------------------\n");
+    printf("  ----\n");
 }
 
 // faz um (push)
