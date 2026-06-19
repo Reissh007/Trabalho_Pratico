@@ -4,9 +4,12 @@
 #include <locale.h>
 #include <ctype.h>
 #include <time.h>
-
 #define MAXCHAR 256
 #define NOME_FICHEIRO "registros_equipamentos.dat" //nome do ficheiro em que estao guardados os dados
+
+#define PENDENTE  0
+#define EM_CURSO  1
+#define CONCLUIDO 2
 
 typedef struct dataverificacao {
     int dia, mes, ano;
@@ -383,11 +386,11 @@ void guardar(equipamento *cabeca) {
     fclose(fb);
     printf("Dados guardados.\n");
 }
-// Menu dos equipamentos
-void menuequipamentos(){
-	equipamento *dispositivos = NULL;
-    carregar(&dispositivos);
-    int proxCIU = obterProximoCIU();
+
+// Menu dos Equipamentos Modulo 1
+
+void menuequipamentos(equipamento *dispositivo, int proxCIU){
+	
     printf("Proximo CIU: %d\n", proxCIU);
 	 do {
         printf("\n=== Equipamentos ===\n");
@@ -516,7 +519,7 @@ void verLog(void) {
     while (fgets(linha, sizeof(linha), f)) printf("%s", linha);
     fclose(f);
 }
-//sub menu 
+// MENU THE CONECTIVIDADE
 void menuConectividade(equipamento *cabeca, int so) {
     int op, ciu;
     do {
@@ -542,16 +545,219 @@ void menuConectividade(equipamento *cabeca, int so) {
 }
 
 
-// Modulo 3 etc
+
+// -- Modulo 3 --
+void importarSensores();
+void listarTodos();
+void listarAnomalos();
+void pesquisarCodigo(char cod[]);
+void listarRecentes(int n);
+void guardarBinario();
+void carregarBinario();
+
+// -- Modulo 4 --
+void criarIncidenteManual();
+void mostrarFila();
+void processarProximo();
+void concluirIncidente(int num);
+void listarPorEstado(int estado);
+void listarTodosInc();
+void listarPorReferencia(char ref[]);
+void listarPorPrioridade(int prio);
+void guardarIncidentes();
+void carregarIncidentes();
+
+// -- Modulo 5 --
+void registarConfigManual();
+void verUltimaConfig();
+void verNConfigs(int n);
+void reverterUltima();
+void historicoEquipamento(char cod[]);
+void guardarConfigs();
+void carregarConfigs();
+void limparConfigs();
+
+// Estados do modulo 4 (enum replicado para o menu)
+
+
+
+// MENU MODULO 3 - Sensores
+
+void menuModulo3() {
+    int op;
+    do {
+        printf("\n=== MODULO 3 - Sensores ===\n");
+        printf("1 - Importar sensores_rack.txt\n");
+        printf("2 - Listar todos\n");
+        printf("3 - Listar N mais recentes\n");
+        printf("4 - Pesquisar por codigo\n");
+        printf("5 - Ver leituras anomalas\n");
+        printf("6 - Guardar em ficheiro binario\n");
+        printf("7 - Carregar ficheiro binario\n");
+        printf("0 - Voltar\n");
+        printf("Opcao: ");
+        scanf("%d", &op);
+        getchar();
+
+        switch (op) {
+            case 1: importarSensores(); break;
+            case 2: listarTodos(); break;
+            case 3: {
+                int n;
+                printf("Quantas leituras? ");
+                scanf("%d", &n);
+                getchar();
+                listarRecentes(n);
+                break;
+            }
+            case 4: {
+                char cod[30];
+                printf("Codigo do sensor: ");
+                fgets(cod, sizeof(cod), stdin);
+                cod[strcspn(cod, "\n")] = 0;
+                pesquisarCodigo(cod);
+                break;
+            }
+            case 5: listarAnomalos(); break;
+            case 6: guardarBinario(); break;
+            case 7: carregarBinario(); break;
+            case 0: break;
+            default: printf("Opcao invalida!\n");
+        }
+    } while (op != 0);
+}
+
+
+// MENU MODULO 4 - Incidentes
+
+void menuModulo4() {
+    int op;
+    do {
+        printf("\n=== MODULO 4 - Incidentes ===\n");
+        printf("1  - Criar incidente manual\n");
+        printf("2  - Ver fila de atendimento\n");
+        printf("3  - Processar proximo da fila\n");
+        printf("4  - Concluir incidente\n");
+        printf("5  - Listar pendentes\n");
+        printf("6  - Listar em curso\n");
+        printf("7  - Listar concluidos\n");
+        printf("8  - Listar todos\n");
+        printf("9  - Pesquisar por equipamento/sensor\n");
+        printf("10 - Listar por prioridade\n");
+        printf("11 - Guardar em ficheiro binario\n");
+        printf("12 - Carregar ficheiro binario\n");
+        printf("0  - Voltar\n");
+        printf("Opcao: ");
+        scanf("%d", &op);
+        getchar();
+
+        switch (op) {
+            case 1:  criarIncidenteManual(); break;
+            case 2:  mostrarFila(); break;
+            case 3:  processarProximo(); break;
+            case 4: {
+                int num;
+                printf("Numero do incidente: ");
+                scanf("%d", &num);
+                getchar();
+                concluirIncidente(num);
+                break;
+            }
+            case 5:
+                printf("\n--- Incidentes Pendentes ---\n");
+                listarPorEstado(PENDENTE);
+                break;
+            case 6:
+                printf("\n--- Incidentes Em Curso ---\n");
+                listarPorEstado(EM_CURSO);
+                break;
+            case 7:
+                printf("\n--- Incidentes Concluidos ---\n");
+                listarPorEstado(CONCLUIDO);
+                break;
+            case 8:  listarTodosInc(); break;
+            case 9: {
+                char ref[30];
+                printf("Referencia: ");
+                fgets(ref, sizeof(ref), stdin);
+                ref[strcspn(ref, "\n")] = 0;
+                listarPorReferencia(ref);
+                break;
+            }
+            case 10: {
+                int p;
+                printf("Prioridade (1-4): ");
+                scanf("%d", &p);
+                getchar();
+                listarPorPrioridade(p);
+                break;
+            }
+            case 11: guardarIncidentes(); break;
+            case 12: carregarIncidentes(); break;
+            case 0:  break;
+            default: printf("Opcao invalida!\n");
+        }
+    } while (op != 0);
+}
+
+// MENU MODULO 5 - Configuracoes
+void menuModulo5() {
+    int op;
+    do {
+        printf("\n=== MODULO 5 - Configuracoes ===\n");
+        printf("1 - Registar nova configuracao\n");
+        printf("2 - Ver ultima configuracao\n");
+        printf("3 - Ver N configuracoes mais recentes\n");
+        printf("4 - Reverter ultima configuracao\n");
+        printf("5 - Ver historico de um equipamento\n");
+        printf("6 - Guardar em ficheiro binario\n");
+        printf("7 - Carregar ficheiro binario\n");
+        printf("8 - Limpar registo de configuracoes\n");
+        printf("0 - Voltar\n");
+        printf("Opcao: ");
+        scanf("%d", &op);
+        getchar();
+
+        switch (op) {
+            case 1: registarConfigManual(); break;
+            case 2: verUltimaConfig(); break;
+            case 3: {
+                int n;
+                printf("Quantas configuracoes? ");
+                scanf("%d", &n);
+                getchar();
+                verNConfigs(n);
+                break;
+            }
+            case 4: reverterUltima(); break;
+            case 5: {
+                char cod[30];
+                printf("Codigo do equipamento: ");
+                fgets(cod, sizeof(cod), stdin);
+                cod[strcspn(cod, "\n")] = 0;
+                historicoEquipamento(cod);
+                break;
+            }
+            case 6: guardarConfigs(); break;
+            case 7: carregarConfigs(); break;
+            case 8: limparConfigs(); break;
+            case 0: break;
+            default: printf("Opcao invalida!\n");
+        }
+    } while (op != 0);
+}
 
 
 
 
 
-// --- Main ---
+//  Main / Menu Principal
 
 int main(void) {
     setlocale(LC_ALL, "Portuguese");
+    equipamento *dispositivos = NULL;
+    carregar(&dispositivos);
+    int proxCIU = obterProximoCIU();
     int so;
     do {
         printf("Sistema operativo: (1-Windows / 0-Linux): ");
@@ -560,23 +766,21 @@ int main(void) {
     } while (so != 0 && so != 1);
 	do {
         printf("\n=== MENU PRINCIPAL ===\n");
-        printf(" 1 - EQUIPAMENTOS / MODULO 1\n");
+        printf(" 1 - EQUIPAMENTOS 	/ MODULO 1\n");
         printf(" 2 - CONECTIVIDADE / MODULO 2\n");
-        printf(" 3 - SENSORES / MODULO 3\n");
-        printf(" 4 - INCIDENTES / MODULO 4\n");
+        printf(" 3 - SENSORES 	   / MODULO 3\n");
+        printf(" 4 - INCIDENTES   / MODULO 4\n");
         printf(" 5 - CONFIGURAÇÕES / MODULO 5\n");
         printf(" 6 - Guardar e sair\n");
         printf("Opcao: "); scanf("%d", &op); getchar();
         switch (op) {
             case 1: menuequipamentos()    break;
-            case 2: removerEquipamento(&dispositivos);     break;
-            case 3: alterarEquipamento(dispositivos);      break;
-            case 4: listar(dispositivos);                  break;
-            case 5: listarPorTipo(dispositivos);           break;
-            case 6: listarPorEstado(dispositivos);         break;
-            case 7: pesquisarEquipamento(dispositivos);    break;
-            case 8: guardar(dispositivos);                 break;
-            default: printf("Opcao invalida.\n");
+            case 2: menuConectividade(dispositivos, so);       break;
+            case 3: menuModulo3();							break;
+            case 4: menuModulo4;                            break;
+            case 5: menuModulo5          					break;
+            case 6:											break; //falta fazer Função que guarda tudo 
+			default: printf("Opcao invalida.\n");
         }
     } while (op != 8);
     
