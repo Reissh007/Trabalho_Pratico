@@ -61,7 +61,7 @@ void estado(equipamento *E){
 	int op;
 	char temp[MAXCHAR];
 	printf("\n Qual o estado do equipamentos? \n 1 - Operacional \n 2 - Em Falha \n 3 - Em Manutenção \n 4 -Desativado;");
-	getchar()
+	getchar();
 	scanf("%d",&op);
 	switch(op){
 	case 1:
@@ -160,7 +160,7 @@ void Adicionar(equipamento *E) {
     	printf("/n Ano: ");
 		scanf("%d",E->Data.ano);
 		sprintf(temp,"%d/%d/%d",E->Data.dia);
-		E.Data.dataver =(char*)malloc(strlen(temp) * sizeof(char));
+		E->Data.dataver =(char*)malloc(strlen(temp) * sizeof(char));
 		strcpy(E->Data.dataver, temp);
 		
 		printf("\n Localizacao do Despositivo: "); 
@@ -170,8 +170,7 @@ void Adicionar(equipamento *E) {
         strcpy(E->localizacao, temp);
         
         printf("\n Estado Operacional do equipamento: "); 
-        // FAZER FUNÇÂO PARA ISSO
-        estado
+        estado(E)
         
         
         
@@ -207,10 +206,10 @@ void verificarlista(equipamento *E,int n){
 		switch(n){
 		case 1:
 				printf("\n Inicio cheio? \nVerificar anterior");
-			if (E.ant == NULL ){
+			if (E->ant == NULL ){
 				printf("\n Anterior vazio");
 				printf("\n Verificar proximo ");
-				verificarlista(E.prox); break;}
+				verificarlista(E->prox); break;}
 				
 			else {printf("Anterior nao vazio, meio de uma lista? ");
 			 prinff("Verificar proximo? ainda em progresso...");break;}
@@ -229,16 +228,16 @@ void listar(equipamento *E){
 	printf("\n-----Listagem dos equipamentos------")
 		if ( E != NULL){
 			
-				printf("\nCodigo Interno Unico: %d", E.CIU);
-				printf("\nNome do Equipamento: %s", E.nome);
-				printf("\nTipo do Equipamento:%s", E.tipo);
-				printf("\nEndereço de IP:%s", E.IP);
-				printf("\nEndereco MAC: %s",E.mac);
-				printf("\nMarca: %s", E.marca);
-				printf("\nModelo: %s", E.modelo);
-				printf("\nData de verificacao: %s ", E.dataverificacao);
-				printf("\nLocalização:%s", E.localizacao);
-				verificarlista(E.prox,n); 
+				printf("\nCodigo Interno Unico: %d", E->CIU);
+				printf("\nNome do Equipamento: %s", E->nome);
+				printf("\nTipo do Equipamento:%s", E->tipo);
+				printf("\nEndereço de IP:%s", E->IP);
+				printf("\nEndereco MAC: %s",E->mac);
+				printf("\nMarca: %s", E->marca);
+				printf("\nModelo: %s", E->modelo);
+				printf("\nData de verificacao: %s ", E->dataverificacao);
+				printf("\nLocalização:%s", E->localizacao);
+				verificarlista(E->prox,n); 
 				}
 	else {
 		printf("/nLista chegou ao fim");
