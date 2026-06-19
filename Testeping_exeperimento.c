@@ -17,10 +17,13 @@ int testip(char *ip, int so) { //usa ping diretamente
 	strftime(datahora, sizeof(datahora), "%Y-%m-%d %H:%M:%S", localtime(&agora));
     if (so == 1) {
         printf(" -MS-WINDOWS- \n"); 
-        sprintf(comando, "ping -n 4 %s", ip);
-    } else {
+        sprintf(comando, "ping -n 4 %s >resultado_ping.txt | ipconfig > resultado_rede_local.txt |arp -a > resultado_arp.txt | ")
+		// nslookup <dominio> > resultado_dns.txt to em duvida a respeito do dominio
+ 		// tracert <IP ou dominio> > resultado_rota.txt ", ip); em duvida
+        
+    } if (so == 0) {
         printf(" -LINUX- \n");
-        sprintf(comando, "ping -c 4 %s", ip);
+        sprintf(comando, "ping -c 4 %s | ip addr > resultado_rede_local.txt| arp -a > resultado_arp.txt", ip);
     }
 
     printf("A iniciar o ping para %s...\n\n", ip);
@@ -43,6 +46,7 @@ int testip(char *ip, int so) { //usa ping diretamente
         	fprintf(f,"\nIP: %s",ip);
         	fprintf(f,"\nComando: %s ",comando); //so para ter certeza que foi feito o comando certo
         	fprintf(f,"\nRESULTADO DO PING : FALHA \n\n--------------------------");
+        	// CRIAR INCIDENTE
 		}
         return 1;
     }

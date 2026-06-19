@@ -168,6 +168,10 @@ void Adicionar(equipamento *E) {
             }
         } while (resp != 0 && resp != 1); 
 } 
+void guardar(equipamento *E, FILE *fb){
+	
+	//guardar num ficheiro todas as informações dentro da lista ligada
+}
 void verificarlista(equipamento *E,int n){
 	if (E == NULL){
 		switch(n){
@@ -195,7 +199,8 @@ void verificarlista(equipamento *E,int n){
 		case 2:
 		printf("\n Iniciar Listagem");
 		listar(E);
-		break;}
+		break;
+		}
 	
 	
 }
@@ -213,7 +218,7 @@ void listar(equipamento *E){
 				printf("\nMarca: %s", E->marca);
 				printf("\nModelo: %s", E->modelo);
 				printf("\nData de verificacao: %s ", E->dataverificacao);
-				printf("\nLocalização:%s", E->localizacao);
+				printf("\nLocalização: %s", E->localizacao);
 				verificarlista(E->prox,n); 
 				}
 	else {
@@ -224,47 +229,66 @@ void listar(equipamento *E){
 // MAIN
 int main() {
 		setlocale(LC_ALL, "Portuguese");
-    int so = 1; 
-    int op;
-    int k;
-    
-   
-    equipamento dispositivo; 
-
-    printf("Selecione o seu Sistema Operativo (1- Windows | 0- Linux): ");
+        int op;
+        int so;
+   	 	int atual;
+   	 	int n; //so para fazer uso na libertação de memoria
+		equipamento *dispositivo = NULL; 
+		FILE *fb= NULL;
+	fb=fopen("registros_equipamentos.dat","ab+") //nome do ficheiro?
+    fread(dispositivo, sizeof(equipamento),k,f); //leitura do ficheiro (comecando do INICIO)
+	printf("")
+	printf("Selecione o seu Sistema Operativo (1- Windows | 0- Linux): ");
     scanf("%d", &so);
     getchar();
+
 
     // MENU    
     do {
         printf("\n-------------------------");
         printf("\n-------Menu de testes----");
-        printf("\n1-Adicionar Equipamento \n2-Listar equipamentos");
-        printf("\n2 Listar todas os equipamentos ");
-          printf("\n3 ");
+        printf("\n1-Adicionar Equipamento");
+        printf("\n2 Listar todos os Equipamentos ");
+        printf("\n3 Remover um Equipamento");
+        printf("\n4 Alterar dados um Equipamento");
+        printf("\n5 Pesquisar Equipamentos");
         printf("\n6- Sair                  ");
         printf("\n-------------------------");
         printf("\n Escolha uma opção: ");
         scanf("%d", &op);
         getchar(); // Limpa o buffer
 
-        switch (op) {
+        switch (op) {	
             case 1:
                 Adicionar(dispositivo)
                 break;
             case 2:
-            	listar
+            	listar(dispositivo);
+            	break;
+            case 3:
+            	// remover(dispositivo); //criando prioridade 1 (involve incidentes)
+            	break;
+            case 4: 
+            	// alterar(dispositivo); //criando
+            	break;	
+            case 5:
+            	 //pesquisa(dispositivo); //criando prioridade 2
+            	break;
             case 6:
                 printf("Saindo e libertando memória...\n");
+                guardar(dispositivos);
                 break;
             default:
                 printf("\nValor invalido!!\n"); 
                 break;
         }    
     } while (op != 6);
-
+ 
+	fseek(fb, 0, SEEK_END); //move para O FIM do ficheiro
+    k = ftell(fb) / sizeof(equipamento);//ftell diz a conta o numero de cacteres apartir da posicao atual dentro do ficheiro (neste caso estamos no fim do ficheiro)
+    // e dividindo tudo pelo tamanho da estrutura nos da a quantidade de estruturas que vao ser necessarias
     // free (libertação da memoria)
-    for (k = 0; k < n; k++) {
+    for (n= 0; n < k; k++) {
         free(dispositivo[k].nome);
         free(dispositivo[k].tipo);
         free(dispositivo[k].marca);
