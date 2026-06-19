@@ -253,7 +253,7 @@ void alterarEquipamento(equipamento *cabeca) {
     if (!e) { printf("CIU %d nao encontrado.\n", ciu); return; }
     int op; char temp[MAXCHAR];
     do {
-        printf("\n[CIU %d — %s]\n", e->CIU, e->nome);
+        printf("\n[CIU %d ï¿½ %s]\n", e->CIU, e->nome);
         printf(" 1-Nome  2-Tipo  3-Marca  4-Modelo  5-IP  6-MAC  7-Localizacao  8-Estado  9-Data  0-Sair\n");
         printf("Opcao: "); scanf("%d", &op); getchar();
         switch (op) {
@@ -480,7 +480,7 @@ void testarRedeCompleta(equipamento *cabeca, int so) {
     char datahora[MAXCHAR];
     obterDataHoraStr(datahora, sizeof(datahora));
     char cab[MAXCHAR * 2];
-    snprintf(cab, sizeof(cab), "\n=== TESTE GERAL — %s ===", datahora);
+    snprintf(cab, sizeof(cab), "\n=== TESTE GERAL ï¿½ %s ===", datahora);
     registarLog(cab);
     int total = 0, ok = 0, falha = 0;
     equipamento *a = cabeca;
@@ -564,7 +564,7 @@ int main(void) {
         printf(" 2 - CONECTIVIDADE / MODULO 2\n");
         printf(" 3 - SENSORES / MODULO 3\n");
         printf(" 4 - INCIDENTES / MODULO 4\n");
-        printf(" 5 - CONFIGURAÇÕES / MODULO 5\n");
+        printf(" 5 - CONFIGURAï¿½ï¿½ES / MODULO 5\n");
         printf(" 6 - Guardar e sair\n");
         printf("Opcao: "); scanf("%d", &op); getchar();
         switch (op) {
