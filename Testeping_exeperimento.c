@@ -49,7 +49,7 @@ int testip(char *ip, int so) { //usa ping diretamente
 fclose(f);
 }
 
-
+/* inutil agora
 int main() {
 	
 	//DO modulo 

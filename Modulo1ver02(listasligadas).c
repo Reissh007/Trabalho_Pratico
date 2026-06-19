@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <locale.h>
+#include <time.h>
 #define MAXCHAR 150
 
 // MODULO 1 
@@ -32,30 +33,6 @@ typedef struct EQUIPAMENTOS {
     EQUIPAMENTOS *prox;
 } equipamento;
 
-// FUNÇAO TESTE DE PING,coloquei para uso do modulo 2
-int testip(char *ip, int so) {
-	
-    char comando[MAXCHAR];
-    
-    if (so == 1) {
-        printf(" -MS-WINDOWS- \n"); 
-        sprintf(comando, "ping -n 4 %s", ip);
-    } else {
-        printf(" -LINUX- \n");
-        sprintf(comando, "ping -c 4 %s", ip);
-    }
-
-    printf("A iniciar o ping para %s...\n\n", ip);
-    int status = system(comando);
-
-    if (status == 0) {
-        printf("\nO host respondeu com sucesso!\n");
-        return 0;
-    } else {
-        printf("\nFalha ao contactar o host ou erro no comando.\n");
-        return 1;
-    }
-}
 
 void estado(equipamento *E){
 	int op;
@@ -153,7 +130,7 @@ void Adicionar(equipamento *E) {
         strcpy(E->IP, temp);
         
         printf("\n Data da ultima verificação: /n Dia: ");
-      	E->Data = (dataverificacao*) malloc(sizeof(dataverificacao));
+      	E->Data = malloc(sizeof(dataverificacao)); //pesquisei para ter certeza
         scanf("%d",E->Data.dia);
         printf("/n Mes: ");
         scanf("%d",E->Data.mes);
