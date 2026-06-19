@@ -60,25 +60,26 @@ int testip(char *ip, int so) {
 void estado(equipamento *E){
 	int op;
 	char temp[MAXCHAR];
-	printf("\n Qual o estado do equipamentos? \n 1 - Operacional \n 2 - Em Falha \n 3 - Em Manutenção \n 4 -Desativado;")
+	printf("\n Qual o estado do equipamentos? \n 1 - Operacional \n 2 - Em Falha \n 3 - Em Manutenção \n 4 -Desativado;");
+	getchar()
 	scanf("%d",&op);
 	switch(op){
 	case 1:
 		printf("\nEstado Operacional");
-		sprintf(temp,"Operacional")
+		sprintf(temp,"Operacional");
 		E->estado=(char*)malloc(strlen(temp));
 		strcpy(E->estado,temp);
 		break;
 		
 	case 2:
 	printf("\nEstado Em Falha");
-		sprintf(temp,"Em Falha")
+		sprintf(temp,"Em Falha");
 		E->estado=(char*)malloc(strlen(temp));
 		strcpy(E->estado,temp);
 		break;
 	case 3:	
 		printf("\nEstado Em Manutencao");
-		sprintf(temp,"Em Manutencao")
+		sprintf(temp,"Em Manutencao");
 		E->estado=(char*)malloc(strlen(temp));
 		strcpy(E->estado,temp);
 		break;
@@ -117,55 +118,56 @@ void Adicionar(equipamento *E) {
         printf("\n Tipo de equipamento: ");
         fgets(temp, sizeof(temp), stdin);
         temp[strcspn(temp, "\n")] = '\0';
-        E.tipo = (char*)malloc((strlen(temp) + 1) * sizeof(char));
-        strcpy(E.tipo, temp);
+        E->tipo = (char*)malloc((strlen(temp) + 1) * sizeof(char));
+        strcpy(E->tipo, temp);
 
         printf("\n Marca: ");
         fgets(temp, sizeof(temp), stdin);
         temp[strcspn(temp, "\n")] = '\0';
-        E.marca = (char*)malloc((strlen(temp) + 1) * sizeof(char));
-        strcpy(E.marca, temp);
+        E->marca = (char*)malloc((strlen(temp) + 1) * sizeof(char));
+        strcpy(E->marca, temp);
 
         printf("\n Modelo: ");
         fgets(temp, sizeof(temp), stdin);
         temp[strcspn(temp, "\n")] = '\0';
-        E.modelo = (char*)malloc((strlen(temp) + 1) * sizeof(char));
-        strcpy(E.modelo, temp);
+        E->modelo = (char*)malloc((strlen(temp) + 1) * sizeof(char));
+        strcpy(E->modelo, temp);
 		// Teste de Ping movido para Testeping_experimento
       
         printf("\n Modelo: ");
         fgets(temp, sizeof(temp), stdin);
         temp[strcspn(temp, "\n")] = '\0';
-        E.modelo = (char*)malloc((strlen(temp) + 1) * sizeof(char));
-        strcpy(E.modelo, temp);
+        E->modelo = (char*)malloc((strlen(temp) + 1) * sizeof(char));
+        strcpy(E->modelo, temp);
         
         printf("\n Endereço MAC: ");
         fgets(temp, sizeof(temp), stdin);
         temp[strcspn(temp, "\n")] = '\0';
-        E.mac = (char*)malloc((strlen(temp) + 1) * sizeof(char));
-        strcpy(E.mac, temp);
+        E->mac = (char*)malloc((strlen(temp) + 1) * sizeof(char));
+        strcpy(E->mac, temp);
         
         printf("\n Endereço IP: "); 
         fgets(temp, sizeof(temp), stdin);
         temp[strcspn(temp, "\n")] = '\0';
-        E.IP = (char*)malloc((strlen(temp) + 1) * sizeof(char));
-        strcpy(E.IP, temp);
+        E->IP = (char*)malloc((strlen(temp) + 1) * sizeof(char));
+        strcpy(E->IP, temp);
         
         printf("\n Data da ultima verificação: /n Dia: ");
-        scanf("%d",E.Data.dia);
+      	E->Data = (dataverificacao*) malloc(sizeof(dataverificacao));
+        scanf("%d",E->Data.dia);
         printf("/n Mes: ");
-        scanf("%d",E.Data.mes);
+        scanf("%d",E->Data.mes);
     	printf("/n Ano: ");
-		scanf("%d",E.Data.ano);
-		sprintf(temp,"%d/%d/%d",E.Data.dia);
+		scanf("%d",E->Data.ano);
+		sprintf(temp,"%d/%d/%d",E->Data.dia);
 		E.Data.dataver =(char*)malloc(strlen(temp) * sizeof(char));
-		strcpy(E.Data.dataver, temp);
+		strcpy(E->Data.dataver, temp);
 		
 		printf("\n Localizacao do Despositivo: "); 
         fgets(temp, sizeof(temp), stdin);
         temp[strcspn(temp, "\n")] = '\0';
-        E.localizacao = (char*)malloc((strlen(temp) + 1) * sizeof(char));
-        strcpy(E.localizacao, temp);
+        E->localizacao = (char*)malloc((strlen(temp) + 1) * sizeof(char));
+        strcpy(E->localizacao, temp);
         
         printf("\n Estado Operacional do equipamento: "); 
         // FAZER FUNÇÂO PARA ISSO
@@ -236,7 +238,7 @@ void listar(equipamento *E){
 				printf("\nModelo: %s", E.modelo);
 				printf("\nData de verificacao: %s ", E.dataverificacao);
 				printf("\nLocalização:%s", E.localizacao);
-				verificarlista(E.prox,n) 
+				verificarlista(E.prox,n); 
 				}
 	else {
 		printf("/nLista chegou ao fim");
